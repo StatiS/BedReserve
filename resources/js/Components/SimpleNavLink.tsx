@@ -11,6 +11,3 @@ export default function SimpleNavLink({ href, children }: PropsWithChildren<Simp
         </a>
     );
 }
-
-
-
