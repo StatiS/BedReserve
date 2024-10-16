@@ -1,10 +1,13 @@
 import {PropsWithChildren} from "react";
+import React from 'react';
 
 type SimpleLayoutProps = {
     heading: string;  // The link URL should be passed as a prop
 };
 
 export default function SimpleLayout({ heading, children }: PropsWithChildren<SimpleLayoutProps>) {
+    const currentPath = window.location.pathname;
+
     return (
         <>
             <div className="min-h-full">
@@ -21,11 +24,11 @@ export default function SimpleLayout({ heading, children }: PropsWithChildren<Si
                                     <div className="ml-10 flex items-baseline space-x-4">
                                         {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
                                         <a href="/home"
-                                           className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" aria-current="page">Home</a>
+                                           className={`rounded-md px-3 py-2 text-sm font-medium ${ currentPath === '/home' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`} aria-current="page">Home</a>
                                         <a href="/about"
-                                           className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About</a>
+                                           className={`rounded-md px-3 py-2 text-sm font-medium ${ currentPath === '/about' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>About</a>
                                         <a href="/contact"
-                                           className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Contact</a>
+                                           className={`rounded-md px-3 py-2 text-sm font-medium ${ currentPath === '/contact' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Contact</a>
                                     </div>
                                 </div>
                             </div>
