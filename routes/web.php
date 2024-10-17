@@ -26,13 +26,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/home', function () {
-    return Inertia::render('Home');
+    return view('Home');
 });
 
 Route::get('/about', function () {
-   return Inertia::render('About');
+   return view('About');
 });
 
 Route::get('/contact', function () {
-    return Inertia::render('Contact');
+    return view('Contact');
 });
