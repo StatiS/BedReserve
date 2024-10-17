@@ -1,3 +1,5 @@
-<x-SimpleLayout heading="About Page">
-    <p class="text-lg">This is a simple page</p>
+<x-SimpleLayout>
+    <x-slot:heading>
+        About Page
+    </x-slot:heading>
 </x-SimpleLayout>

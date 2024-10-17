@@ -1,3 +1,5 @@
-<x-SimpleLayout heading="Contact Page">
-    <p class="text-lg">This is a simple page</p>
+<x-SimpleLayout>
+    <x-slot:heading>
+        Contact Page
+    </x-slot:heading>
 </x-SimpleLayout>
