@@ -2,36 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Job {
-    public static function all(): array {
-        return [
-            [
-                'id' => 1,
-                'title' => 'Director',
-                'salary' => '$50,000'
-            ],
-            [
-                'id' => 2,
-                'title' => 'Programmer',
-                'salary' => '$100,000'
-            ],
-            [
-                'id' => 3,
-                'title' => 'Teacher',
-                'salary' => '$150,000'
-            ]
-        ];
-    }
+class Job extends Model {
+    // Laravel uses conventions to link this to db. By default, it uses the plural of the class name.
+    // But to define a custom table name to link to, you just do this
+    protected $table = 'job_listings';
 
-    public static function find(int $id): array {
-        $job = Arr::first(static::all(), fn($job) => $job['id'] == $id);
+    protected $fillable = ['title', 'salary'];
 
-        if (!$job) {
-            abort(404, 'Job not found');
-        }
-
-        return $job;
-    }
+    use HasFactory;
 }
