@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Job;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -28,32 +28,15 @@ Route::get('/dashboard', function () {
 
 
 // --------------------- Course stuff ---------------------------
-$jobs = [
-    [
-        'id' => 1,
-        'title' => 'Director',
-        'salary' => '$50,000'
-    ],
-    [
-        'id' => 2,
-        'title' => 'Programmer',
-        'salary' => '$100,000'
-    ],
-    [
-        'id' => 3,
-        'title' => 'Teacher',
-        'salary' => '$150,000'
-    ]
-];
 
-Route::get('/jobs', function () use($jobs) {
+Route::get('/jobs', function () {
     return view('Jobs', [
-        'jobs' => $jobs
+        'jobs' => Job::all()
     ]);
 });
 
-Route::get('/jobs/{id}', function ($id) use($jobs) {
-    $job = Arr::first($jobs, fn($job) => $job['id'] == $id);
+Route::get('/jobs/{id}', function ($id) {
+    $job = Job::find($id);
 
     return view('Job', ['job' => $job]);
 });
