@@ -30,8 +30,11 @@ Route::get('/dashboard', function () {
 // --------------------- Course stuff ---------------------------
 
 Route::get('/jobs', function () {
+    // using with here eager loads employers, so we avoid n+1 problem
+    $jobs = Job::with('employer')->paginate(5);
+
     return view('Jobs', [
-        'jobs' => Job::all()
+        'jobs' => $jobs
     ]);
 });
 
