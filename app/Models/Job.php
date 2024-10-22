@@ -10,7 +10,10 @@ class Job extends Model {
     // But to define a custom table name to link to, you just do this
     protected $table = 'job_listings';
 
-    protected $fillable = ['title', 'salary'];
+    //protected $fillable = ['employer_id', 'title', 'salary'];
+
+    // opposite of fillable, passing an empty array effectively disables guarding updating of fields
+    protected $guarded = [];
 
     public function employer() {
         return $this->belongsTo(Employer::class);

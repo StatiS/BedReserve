@@ -24,6 +24,6 @@ class DatabaseSeeder extends Seeder
         Job::factory(100)->create();
 
         //if you wanted to split seeding into classes you could run individually
-        $this->call(JobSeeder::class);
+//        $this->call(JobSeeder::class);
     }
 }
