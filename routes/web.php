@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Job;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,87 +29,21 @@ Route::get('/dashboard', function () {
 
 // --------------------- Course stuff ---------------------------
 
-
-// Index
-Route::get('/jobs', function () {
-    // using with here eager loads employers, so we avoid n+1 problem
-    $jobs = Job::with('employer')->latest()->paginate(5);
-
-    return view('jobs.index', [
-        'jobs' => $jobs
-    ]);
-});
-
-// Create
-Route::get('/jobs/create', function () {
-    return view('jobs.create');
-});
-
-// Store
-Route::post('/jobs', function () {
-    request()->validate([
-        'title' => ['required', 'min:3'],
-        'salary' => ['required', 'numeric'],
-    ]);
-
-    Job::create([
-        'title' => request('title'),
-        'salary' => request('salary'),
-        'employer_id' => 1,
-    ]);
-
-    return redirect('/jobs');
-});
-
-// Show
-Route::get('/jobs/{id}', function ($id) {
-    $job = Job::find($id);
-
-    return view('jobs.show', ['job' => $job]);
-});
-
-// Edit View
-Route::get('/jobs/{id}/edit', function ($id) {
-    $job = Job::find($id);
-
-    return view('jobs.edit', ['job' => $job]);
-});
-
-// Update
-Route::patch('/jobs/{id}', function ($id) {
-    request()->validate([
-        'title' => ['required', 'min:3'],
-        'salary' => ['required', 'numeric'],
-    ]);
-
-    $job = Job::findOrFail($id);
-
-    $job->update([
-        'title' => request('title'),
-        'salary' => request('salary'),
-    ]);
-
-    return redirect('/jobs/' . $job->id);
-});
-
-// Destroy
-Route::delete('/jobs/{id}', function ($id) {
-    $job = Job::findOrFail($id);
-    $job->delete();
-
-    return redirect('/jobs');
-});
+Route::view('/home', 'Home');
+Route::view('/about', 'About');
+Route::view('/contact', 'Contact');
 
 
+// This little fucker does the same thing as all of the shit below, cuz laravel likes conventions
+Route::resource('jobs', JobController::class);
+/*Route::controller(JobController::class)->group(function () {
+    Route::get(   '/jobs',            'index');
+    Route::get(   '/jobs/create' ,    'create');
+    Route::post(  '/jobs',            'store');
+    Route::get(   '/jobs/{job}',      'show');
+    Route::get(   '/jobs/{job}/edit', 'edit');
+    Route::patch( '/jobs/{job}',      'update');
+    Route::delete('/jobs/{job}',      'destroy');
+});*/
 
-Route::get('/home', function () {
-    return view('Home');
-});
 
-Route::get('/about', function () {
-   return view('About');
-});
-
-Route::get('/contact', function () {
-    return view('Contact');
-});
