@@ -29,6 +29,8 @@ Route::get('/dashboard', function () {
 
 // --------------------- Course stuff ---------------------------
 
+
+// Index
 Route::get('/jobs', function () {
     // using with here eager loads employers, so we avoid n+1 problem
     $jobs = Job::with('employer')->latest()->paginate(5);
@@ -38,10 +40,12 @@ Route::get('/jobs', function () {
     ]);
 });
 
+// Create
 Route::get('/jobs/create', function () {
     return view('jobs.create');
 });
 
+// Store
 Route::post('/jobs', function () {
     request()->validate([
         'title' => ['required', 'min:3'],
@@ -57,11 +61,46 @@ Route::post('/jobs', function () {
     return redirect('/jobs');
 });
 
+// Show
 Route::get('/jobs/{id}', function ($id) {
     $job = Job::find($id);
 
     return view('jobs.show', ['job' => $job]);
 });
+
+// Edit View
+Route::get('/jobs/{id}/edit', function ($id) {
+    $job = Job::find($id);
+
+    return view('jobs.edit', ['job' => $job]);
+});
+
+// Update
+Route::patch('/jobs/{id}', function ($id) {
+    request()->validate([
+        'title' => ['required', 'min:3'],
+        'salary' => ['required', 'numeric'],
+    ]);
+
+    $job = Job::findOrFail($id);
+
+    $job->update([
+        'title' => request('title'),
+        'salary' => request('salary'),
+    ]);
+
+    return redirect('/jobs/' . $job->id);
+});
+
+// Destroy
+Route::delete('/jobs/{id}', function ($id) {
+    $job = Job::findOrFail($id);
+    $job->delete();
+
+    return redirect('/jobs');
+});
+
+
 
 Route::get('/home', function () {
     return view('Home');
