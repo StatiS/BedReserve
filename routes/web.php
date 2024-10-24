@@ -35,15 +35,23 @@ Route::view('/contact', 'Contact');
 
 
 // This little fucker does the same thing as all of the shit below, cuz laravel likes conventions
-Route::resource('jobs', JobController::class);
-/*Route::controller(JobController::class)->group(function () {
+//Route::resource('jobs', JobController::class);
+
+Route::controller(JobController::class)->group(function () {
     Route::get(   '/jobs',            'index');
     Route::get(   '/jobs/create' ,    'create');
-    Route::post(  '/jobs',            'store');
+    Route::post(  '/jobs',            'store')->middleware('auth');
     Route::get(   '/jobs/{job}',      'show');
-    Route::get(   '/jobs/{job}/edit', 'edit');
+    Route::get(   '/jobs/{job}/edit', 'edit')->middleware('auth')
+//        ->can('edit-job', 'job'); This is how you would use a gate, could also do it in middleware array
+        ->can('edit', 'job'); // and this calls the function in JobPolicy
     Route::patch( '/jobs/{job}',      'update');
     Route::delete('/jobs/{job}',      'destroy');
-});*/
+});
+
+
+
+
+
 
 

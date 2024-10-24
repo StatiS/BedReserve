@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employer;
 use App\Models\Job;
-use Illuminate\Http\Request;
+use Database\Factories\EmployerFactory;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class JobController extends Controller
 {
@@ -27,6 +30,10 @@ class JobController extends Controller
     }
 
     public function store() {
+        $employer = Employer::factory()->create([
+            'user_id' => Auth::id(),
+        ]);
+
         request()->validate([
             'title' => ['required', 'min:3'],
             'salary' => ['required', 'numeric'],
@@ -35,13 +42,16 @@ class JobController extends Controller
         Job::create([
             'title' => request('title'),
             'salary' => request('salary'),
-            'employer_id' => 1,
+            'employer_id' => $employer->id,
         ]);
 
         return redirect('/jobs');
     }
 
     public function edit(Job $job) {
+        // Handled by the middlware call in the routes file
+        //Gate::authorize('edit-job', $job);
+
         return view('jobs.edit', ['job' => $job]);
     }
 
