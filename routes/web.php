@@ -53,5 +53,3 @@ Route::controller(JobController::class)->group(function () {
 
 
 
-
-

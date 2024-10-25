@@ -7,6 +7,7 @@ use App\Models\Job;
 use Database\Factories\EmployerFactory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 class JobController extends Controller
 {
@@ -39,11 +40,13 @@ class JobController extends Controller
             'salary' => ['required', 'numeric'],
         ]);
 
-        Job::create([
-            'title' => request('title'),
-            'salary' => request('salary'),
-            'employer_id' => $employer->id,
-        ]);
+        $job = new Job();
+        $job->title = request('title');
+        $job->salary = request('salary');
+        $job->employer_id = $employer->id;
+        $job->save();
+
+        Mail::to($job->employer->user)->send(new \App\Mail\JobPosted($job));
 
         return redirect('/jobs');
     }
