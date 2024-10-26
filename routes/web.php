@@ -49,6 +49,12 @@ Route::controller(JobController::class)->group(function () {
     Route::delete('/jobs/{job}',      'destroy');
 });
 
+Route::get('/queueTest', function () {
+    $job = \App\Models\Job::first();
+
+    \App\Jobs\TranslateJob::dispatch($job);
+    return 'Done';
+});
 
 
 

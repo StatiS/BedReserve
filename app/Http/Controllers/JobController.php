@@ -46,7 +46,7 @@ class JobController extends Controller
         $job->employer_id = $employer->id;
         $job->save();
 
-        Mail::to($job->employer->user)->send(new \App\Mail\JobPosted($job));
+        Mail::to($job->employer->user)->queue(new \App\Mail\JobPosted($job));
 
         return redirect('/jobs');
     }
